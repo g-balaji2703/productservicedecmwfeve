@@ -3,10 +3,11 @@ package com.scaler.productservicedecmwfeve.controller;
 import com.scaler.productservicedecmwfeve.models.Product;
 import com.scaler.productservicedecmwfeve.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,15 +15,21 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private RestTemplate restTemplate;
     @Autowired
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService, RestTemplate restTemplate){
         this.productService = productService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping() //localhost:8080/products
-    public List<Product> getAllProducts(){
+    public ResponseEntity<List<Product>> getAllProducts(){
 //        restTemplate.delete(null);
-        return new ArrayList<>();
+//        return new ArrayList<>();
+        ResponseEntity<List<Product>> response = new ResponseEntity<>(
+                productService.getAllProducts(), HttpStatus.NOT_FOUND
+        );
+        return response;
     }
 
     @GetMapping("/{id}")
